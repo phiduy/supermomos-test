@@ -110,33 +110,42 @@ export default function SocialBanner() {
 
   return (
     <>
-      <DropzoneContainer>
-        {banner && (
-          <div
-            style={{
-              position: "absolute",
-              zIndex: 0,
-              width: "100%",
-              height: "100%"
-            }}
+      <div
+        style={{
+          flex: 1
+        }}
+      >
+        <DropzoneContainer>
+          {banner && (
+            <div
+              style={{
+                position: "absolute",
+                zIndex: 0,
+                width: "100%",
+                height: "100%"
+              }}
+            >
+              <Image src={banner} alt={`${banner}`} fill />
+            </div>
+          )}
+          <StyledSelectButton
+            banner={banner}
+            onClick={() => setOpen(true)}
+            style={{ zIndex: banner && !open ? 1 : 0 }}
           >
-            <Image src={banner} alt={`${banner}`} fill />
-          </div>
-        )}
-        <StyledSelectButton
-          banner={banner}
-          onClick={() => setOpen(true)}
-          style={{ zIndex: banner && !open ? 1 : 0 }}
-        >
-          <Image
-            src={"/icon/ic_picture.svg"}
-            alt="ic_picture"
-            width={24}
-            height={24}
-          />
-          <span>Add a banner</span>
-        </StyledSelectButton>
-      </DropzoneContainer>
+            <Image
+              src={"/icon/ic_picture.svg"}
+              alt="ic_picture"
+              width={24}
+              height={24}
+            />
+            <span>Add a banner</span>
+          </StyledSelectButton>
+        </DropzoneContainer>
+        <FormHelpText>
+          {errors.banner ? errors.banner.message : ""}
+        </FormHelpText>
+      </div>
       <Modal
         isOpen={open}
         onRequestClose={handleClose}
