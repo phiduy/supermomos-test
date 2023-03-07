@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const StyledTitleTextfield = styled.input`
+const StyledTitleTextField = styled.input`
   background-color: ${(props) => props.theme.primary};
   padding: 4px 8px;
   text-transform: capitalize;
@@ -26,3 +26,5 @@ export const StyledTitleTextfield = styled.input`
     color: white;
   }
 `
+
+export default StyledTitleTextField

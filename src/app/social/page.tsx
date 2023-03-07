@@ -2,9 +2,9 @@
 import styled, { ThemeProvider } from "styled-components"
 import SocialCreateForm from "./SocialCreateForm"
 
-import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css"
 
-export const Background = styled.div`
+const Background = styled.div`
   background: ${(props) =>
     `linear-gradient(152.24deg,${props.theme.secondary}  0%,${props.theme.primary} 100%)`};
   width: 100%;
@@ -12,7 +12,7 @@ export const Background = styled.div`
   color: ${(props) => props.theme.gray};
 `
 
-export const Container = styled.div`
+const Container = styled.div`
   padding: 100px 96px 82px;
 `
 

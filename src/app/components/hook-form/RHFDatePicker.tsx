@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { forwardRef, useState } from "react"
+import { forwardRef } from "react"
 import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker"
 
 // form
@@ -23,41 +23,6 @@ const StyledCustomInput = styled.button`
   text-align: left;
   font-weight: bold;
 `
-// eslint-disable-next-line react/display-name
-const DatePickerCustomInput = forwardRef<any>(
-  ({ value, placeholder, startIcon, endIcon, onClick }, ref) => (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center"
-      }}
-      ref={ref}
-    >
-      {startIcon && (
-        <Image
-          style={{ marginRight: 8 }}
-          src={startIcon}
-          alt={`${startIcon}`}
-          width={24}
-          height={24}
-        />
-      )}
-      <StyledCustomInput onClick={onClick}>
-        {value || placeholder}
-      </StyledCustomInput>
-      {endIcon && (
-        <Image
-          style={{ marginRight: 8 }}
-          src={endIcon}
-          alt={`${endIcon}`}
-          width={24}
-          height={24}
-        />
-      )}
-    </div>
-  )
-)
 
 type Props = Omit<ReactDatePickerProps, "onChange"> & {
   name: string
@@ -66,6 +31,49 @@ type Props = Omit<ReactDatePickerProps, "onChange"> & {
   startIcon?: string
   endIcon?: string
 }
+
+// eslint-disable-next-line react/display-name
+const DatePickerCustomInput = forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<{
+    placeholder?: string
+    startIcon?: string
+    endIcon?: string
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
+    value?: any
+  }>
+>(({ value, placeholder, startIcon, endIcon, onClick }, ref) => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center"
+    }}
+    ref={ref}
+  >
+    {startIcon && (
+      <Image
+        style={{ marginRight: 8 }}
+        src={startIcon}
+        alt={`${startIcon}`}
+        width={24}
+        height={24}
+      />
+    )}
+    <StyledCustomInput onClick={onClick}>
+      {value || placeholder}
+    </StyledCustomInput>
+    {endIcon && (
+      <Image
+        style={{ marginRight: 8 }}
+        src={endIcon}
+        alt={`${endIcon}`}
+        width={24}
+        height={24}
+      />
+    )}
+  </div>
+))
 
 function RHFDatePicker({
   name,

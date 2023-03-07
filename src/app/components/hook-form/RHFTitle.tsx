@@ -2,8 +2,8 @@ import Image from "next/image"
 import React from "react"
 // form
 import { useFormContext, Controller } from "react-hook-form"
-import { FormGroup, FormHelpText, Textfield } from "../StyledForm"
-import { StyledTitleTextfield } from "../StyledTitleTextfield"
+import { FormGroup, FormHelpText } from "../StyledForm"
+import StyledTitleTextField from "../StyledTitleTextField"
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ function RHFTextField({ name, helperText, ...other }: Props) {
       control={control}
       render={({ field, fieldState: { error } }) => (
         <FormGroup>
-          <StyledTitleTextfield
+          <StyledTitleTextField
             {...field}
             value={
               typeof field.value === "number" && field.value === 0
