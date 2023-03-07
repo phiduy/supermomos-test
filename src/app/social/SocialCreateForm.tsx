@@ -62,7 +62,8 @@ export const Space = styled.div`
 `
 
 const headers = {
-  "content-type": "application/json"
+  "content-type": "application/json",
+  "access-control-allow-origin": "*"
 }
 
 const createSocial = async (values: Omit<SocialValues, "startDate">) => {
