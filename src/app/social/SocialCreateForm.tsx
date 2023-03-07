@@ -61,16 +61,17 @@ export const Space = styled.div`
     `};
 `
 
+const headers = {
+  "content-type": "application/json",
+}
+
 const createSocial = async (values: Omit<SocialValues, "startDate">) => {
   const response = await fetch(
     "https://api.supermomos-dev.com/interview/social",
     {
       method: "POST",
-      body: JSON.stringify(values),
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
+      headers: headers,
+      body: JSON.stringify(values)
     }
   )
   return response.json()
