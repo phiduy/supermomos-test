@@ -1,8 +1,11 @@
 "use client"
 import styled, { ThemeProvider } from "styled-components"
+import { ToastContainer } from "react-toastify"
+import ErrorBoundary from "../components/ErrorBoundary"
 import SocialCreateForm from "./SocialCreateForm"
 
 import "react-datepicker/dist/react-datepicker.css"
+import "react-toastify/dist/ReactToastify.css"
 
 const Background = styled.div`
   background: ${(props) =>
@@ -28,12 +31,15 @@ const theme = {
 
 export default function Page() {
   return (
-    <ThemeProvider theme={theme}>
-      <Background>
-        <Container>
-          <SocialCreateForm />
-        </Container>
-      </Background>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <Background>
+          <Container>
+            <SocialCreateForm />
+          </Container>
+          <ToastContainer />
+        </Background>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }

@@ -17,8 +17,7 @@ import SocialPrivacy from "./SocialPrivacy"
 import SocialTagSelection from "./SocialTagSelection"
 import SocialBanner from "./SocialBanner"
 import moment from "moment"
-
-export const FormContainer = styled.div``
+import { toast } from "react-toastify"
 
 export const SubTitle = styled.h2<{ backgroundColor?: string }>`
   background-color: ${(props) =>
@@ -61,21 +60,35 @@ export const Space = styled.div`
     `};
 `
 
-const headers = {
+const headers = new Headers({
   "content-type": "application/json",
   "access-control-allow-origin": "*"
+})
+
+const fetchJSON = (args: any) => {
+  return fetch(args).then((res) => {
+    if (res.ok) {
+      return res.json()
+    }
+    return res.text().then((text: string) => {
+      throw new Error(text)
+    })
+  })
 }
 
-const createSocial = async (values: Omit<SocialValues, "startDate">) => {
-  const response = await fetch(
-    "https://api.supermomos-dev.com/interview/social",
-    {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(values)
+const createSocial = (values: Omit<SocialValues, "startDate">) => {
+  return fetch("https://api.supermomos-dev.com/interview/social", {
+    method: "POST",
+    headers,
+    body: JSON.stringify(values)
+  }).then((res) => {
+    if (res.ok) {
+      return res.json()
     }
-  )
-  return response.json()
+    return res.text().then((text: string) => {
+      throw new Error(text)
+    })
+  })
 }
 
 const defaultValues = {
@@ -123,8 +136,18 @@ export default function SocialCreateForm() {
         banner: data.banner,
         tags: data.tags
       }
+
+      /**
+       * ! CORS Problems in API
+       */
       const response = await createSocial(body)
-    } catch (error) {}
+      console.log("response", response)
+    } catch (error: any) {
+      let message
+      if (error instanceof Error) message = error.message
+      else message = String(error)
+      toast.error(message || "Error")
+    }
   }
 
   return (
