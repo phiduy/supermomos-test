@@ -17,8 +17,12 @@ export type SocialValues = {
 // ----------------------------------------------------------------------
 export const FormSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
-  startDate: Yup.date().required("Start date is required"),
-  startAt: Yup.date().required("Start at is required"),
+  startDate: Yup.date()
+    .required("Start date is required")
+    .typeError("Invalid value"),
+  startAt: Yup.date()
+    .required("Start at is required")
+    .typeError("Invalid value"),
   venue: Yup.string().required("Venue is required"),
   capacity: Yup.number().required("Capacity is required"),
   price: Yup.number(),

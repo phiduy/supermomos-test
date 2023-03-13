@@ -1,23 +1,24 @@
 import { useForm } from "react-hook-form"
 import styled, { useTheme } from "styled-components"
-import {
+import moment from "moment"
+import { toast } from "react-toastify"
+import { yupResolver } from "@hookform/resolvers/yup"
+import Button from "../components/StyledButton"
+import { FormGroup, Label, Textfield } from "../components/StyledForm"
+import StyledTag from "../components/StyledTag"
+import FormProvider, {
   RHFCheckbox,
   RHFDatePicker,
   RHFTextArea,
   RHFTextField,
   RHFTitle
 } from "../components/hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import Button from "../components/StyledButton"
-import { FormGroup, Label, Textfield } from "../components/StyledForm"
-import StyledTag from "../components/StyledTag"
-import { FormSchema, SocialValues } from "./schema"
-import FormProvider from "../components/hook-form/FormProvider"
+import Spinner from "../components/Spinner"
 import SocialPrivacy from "./SocialPrivacy"
 import SocialTagSelection from "./SocialTagSelection"
 import SocialBanner from "./SocialBanner"
-import moment from "moment"
-import { toast } from "react-toastify"
+import { FormSchema, SocialValues } from "./schema"
+import { useState } from "react"
 
 export const SubTitle = styled.h2<{ backgroundColor?: string }>`
   background-color: ${(props) =>
@@ -60,21 +61,23 @@ export const Space = styled.div`
     `};
 `
 
+export const LoadingScreen = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const headers = new Headers({
   "content-type": "application/json",
   "access-control-allow-origin": "*"
 })
-
-const fetchJSON = (args: any) => {
-  return fetch(args).then((res) => {
-    if (res.ok) {
-      return res.json()
-    }
-    return res.text().then((text: string) => {
-      throw new Error(text)
-    })
-  })
-}
 
 const createSocial = (values: Omit<SocialValues, "startDate">) => {
   return fetch("https://api.supermomos-dev.com/interview/social", {
@@ -105,6 +108,7 @@ const defaultValues = {
 
 export default function SocialCreateForm() {
   const theme = useTheme()
+  const [loading, setLoading] = useState(false)
   const methods = useForm<SocialValues>({
     resolver: yupResolver(FormSchema),
     defaultValues
@@ -120,6 +124,7 @@ export default function SocialCreateForm() {
 
   const onSubmit = async (data: SocialValues) => {
     try {
+      setLoading(true)
       const startAt = combineDateAndTime(
         data.startDate as Date,
         data.startAt as Date
@@ -147,6 +152,7 @@ export default function SocialCreateForm() {
       if (error instanceof Error) message = error.message
       else message = String(error)
       toast.error(message || "Error")
+      setLoading(false)
     }
   }
 
@@ -154,6 +160,11 @@ export default function SocialCreateForm() {
     <Space direction="column">
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Space justifyContent="center">
+          {loading && (
+            <LoadingScreen>
+              <Spinner />
+            </LoadingScreen>
+          )}
           <div style={{ marginRight: 40, flex: 1 }}>
             <RHFTitle name="title" placeholder="Untitle Event" autoFocus />
             <Space>
